@@ -6,45 +6,50 @@ import Login from "../Pages/Login";
 import Register from "../Pages/Register";
 import AuthLayout from "../Layouts/AuthLayout";
 import NewsDetails from "../Pages/NewsDetails";
+import PrivateRoute from "../Provider/PrivateRoute";
 const router = createBrowserRouter([
     {
-        path: '/',
+        path: "/",
         element: <Home></Home>,
         children: [
             {
-                path: '/',
+                path: "/",
                 element: <HomeLayout></HomeLayout>,
             },
             {
-                path: '/category/:id',
+                path: "/category/:id",
                 element: <CategoryNews></CategoryNews>,
-                loader: () => fetch('/news.json')
-            }
-        ]
+                loader: () => fetch("/news.json"),
+            },
+        ],
     },
     {
-        path: '/auth',
+        path: "/auth",
         element: <AuthLayout></AuthLayout>,
         children: [
             {
-                path: '/auth/login',
-                element: <Login></Login>
+                path: "/auth/login",
+                element: <Login></Login>,
             },
             {
-                path: '/auth/register',
-                element: <Register></Register>
-            }
-        ]
+                path: "/auth/register",
+                element: <Register></Register>,
+            },
+        ],
     },
     {
-        path: '/news-details/:id',
-        element: <NewsDetails></NewsDetails>,
-        loader: () => fetch('/news.json'),
+        path: "/news-details/:id",
+        element: (
+            <PrivateRoute>
+                <NewsDetails></NewsDetails>
+            </PrivateRoute>
+        ),
+        loader: () => fetch("/news.json"),
     },
     {
-        path: '/*',
-        element: <h2>Page not found</h2>
-    }
-])
+        path: "/*",
+        element: <h2>Page not found</h2>,
+    },
+]);
 
 export default router;
